@@ -6,7 +6,7 @@ module Flow
     include EventEmitter
 
     # @visibility private
-    LOGGER = ::Log.for(self)
+    Log = ::Log.for(self)
 
     # @return [String]
     getter guild_id
