@@ -131,33 +131,57 @@ module Flow
         node.on(:websocket_closed) { |*args| handle_websocket_closed(*args) }
       end  
   
-      private def handle_track_start(track_data)
+    # Define events for track start, end, exception, stuck and websocket closed
+    EventHandler.event TrackStartEvent, track_data : TrackData, player : Player
+    EventHandler.event TrackEndEvent, track : Track, player : Player
+    EventHandler.event TrackExceptionEvent, track : Track, player : Player
+    EventHandler.event TrackStuckEvent, track : Track, player : Player
+    EventHandler.event WebSocketClosedEvent, code : Int32, reason : String, by_remote : Bool, player : Player
+
+    def initialize(@guild_id)
+        on(TrackStartEvent) do |e|
         LOGGER.debug { "Track started for #{@guild_id}" }
-        trigger("track_start", Events::TrackStart.new(track_data, self))
-      end
-    
-      def handle_track_end(track)
+        end
+
+        on(TrackEndEvent) do |e|
         LOGGER.debug { "Track ended for #{@guild_id}" }
         @track = nil
-        trigger("track_end", Events::TrackEnd.new(track, self))
-      end
-    
-      def handle_track_exception(track)
+        end
+
+        on(TrackExceptionEvent) do |e|
         LOGGER.debug { "Track exception for #{@guild_id}" }
         @track = nil
-        trigger("track_exception", Events::TrackException.new(track, self))
-      end
-    
-      private def handle_track_stuck(track)
+        end
+
+        on(TrackStuckEvent) do |e|
         LOGGER.debug { "Track stuck for #{@guild_id}" }
         @track = nil
-        trigger("track_stuck", Events::TrackStuck.new(track, self))
-      end
-    
-      private def handle_websocket_closed(code, reason, by_remote)
+        end
+
+        on(WebSocketClosedEvent) do |e|
         LOGGER.warn { "WebSocket closed for #{@guild_id}" }
         @track = nil
-        trigger("websocket_closed", Events::WebSocketClosed.new(code, reason, by_remote, self))
-      end
+        end
+    end
+
+    def handle_track_start(track_data)
+        emit(TrackStartEvent, track_data, self)
+    end
+
+    def handle_track_end(track)
+        emit(TrackEndEvent, track, self)
+    end
+
+    def handle_track_exception(track)
+        emit(TrackExceptionEvent, track, self)
+    end
+
+    def handle_track_stuck(track)
+        emit(TrackStuckEvent, track, self)
+    end
+
+    def handle_websocket_closed(code, reason, by_remote)
+        emit(WebSocketClosedEvent, code, reason, by_remote, self)
+        end
     end
 end
