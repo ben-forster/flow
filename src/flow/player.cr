@@ -1,3 +1,6 @@
+require "flow/model"
+require "flow/events"
+require "event_mitter"
 require "log"
 require "json"
 
