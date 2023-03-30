@@ -4,11 +4,11 @@ require "flow/websocket"
 require "event_emitter"
 require "net/http"
 
-module Caldera
+module Flow
   class Node
 
     LOGGER = ::Log.for(self)
 
-    
+
   end
 end

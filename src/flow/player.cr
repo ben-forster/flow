@@ -1,12 +1,12 @@
 require "flow/model"
 require "flow/events"
-require "event_emitter"
+require "event_handler"
 require "log"
 require "json"
 
 module Flow
     class Player
-    include EventEmitter
+    include EventHandler
 
     # @visibility private
     LOGGER = ::Log.for(self)
@@ -131,33 +131,33 @@ module Flow
         node.on(:websocket_closed) { |*args| handle_websocket_closed(*args) }
       end  
   
-      def handle_track_start(data)
-        LOGGER.debug { "Track started for #{@guild_id}" }
-        emit(:track_start, Events::TrackStart.new(data, self))
+      private def handle_track_start(track_data)
+        puts "Track started for #{@guild_id}"
+        trigger("track_start", Events::TrackStart.new(track_data, self))
       end
-      
-      def handle_track_end(data)
-        LOGGER.debug { "Track ended for #{@guild_id}" }
+    
+      def handle_track_end(track)
+        puts "Track ended for #{@guild_id}"
         @track = nil
-        emit(:track_end, Events::TrackEnd.new(data, self))
+        trigger("track_end", Events::TrackEnd.new(track, self))
       end
-      
-      def handle_track_exception(data)
-        LOGGER.debug { "Track exception for #{@guild_id}" }
+    
+      def handle_track_exception(track)
+        puts "Track exception for #{@guild_id}"
         @track = nil
-        emit(:track_exception, Events::TrackException.new(data, self))
+        trigger("track_exception", Events::TrackException.new(track, self))
       end
-      
-      def handle_track_stuck(data)
-        LOGGER.debug { "Track stuck for #{@guild_id}" }
+    
+      private def handle_track_stuck(track)
+        puts "Track stuck for #{@guild_id}"
         @track = nil
-        emit(:track_stuck, Events::TrackStuck.new(data, self))
+        trigger("track_stuck", Events::TrackStuck.new(track, self))
       end
-      
-      def handle_websocket_closed(data)
-        LOGGER.warn { "WebSocket closed for #{@guild_id}" }
+    
+      private def handle_websocket_closed(code, reason, by_remote)
+        puts "WebSocket closed for #{@guild_id}"
         @track = nil
-        emit(:websocket_closed, Events::WebSocketClosed.new(data, self))
+        trigger("websocket_closed", Events::WebSocketClosed.new(code, reason, by_remote, self))
       end
     end
 end
