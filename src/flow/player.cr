@@ -132,30 +132,30 @@ module Flow
       end  
   
       private def handle_track_start(track_data)
-        puts "Track started for #{@guild_id}"
+        LOGGER.debug { "Track started for #{@guild_id}" }
         trigger("track_start", Events::TrackStart.new(track_data, self))
       end
     
       def handle_track_end(track)
-        puts "Track ended for #{@guild_id}"
+        LOGGER.debug { "Track ended for #{@guild_id}" }
         @track = nil
         trigger("track_end", Events::TrackEnd.new(track, self))
       end
     
       def handle_track_exception(track)
-        puts "Track exception for #{@guild_id}"
+        LOGGER.debug { "Track exception for #{@guild_id}" }
         @track = nil
         trigger("track_exception", Events::TrackException.new(track, self))
       end
     
       private def handle_track_stuck(track)
-        puts "Track stuck for #{@guild_id}"
+        LOGGER.debug { "Track stuck for #{@guild_id}" }
         @track = nil
         trigger("track_stuck", Events::TrackStuck.new(track, self))
       end
     
       private def handle_websocket_closed(code, reason, by_remote)
-        puts "WebSocket closed for #{@guild_id}"
+        LOGGER.warn { "WebSocket closed for #{@guild_id}" }
         @track = nil
         trigger("websocket_closed", Events::WebSocketClosed.new(code, reason, by_remote, self))
       end
