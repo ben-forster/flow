@@ -1,7 +1,7 @@
 require "flow/model"
 require "flow/player"
 require "flow/websocket"
-require "event_emitter"
+require "event_handler"
 require "net/http"
 
 module Flow

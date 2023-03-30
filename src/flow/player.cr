@@ -107,9 +107,9 @@ module Flow
       end
 
     # @visibility private
-    def state=(new_state)
-        @time = Time.at(new_state["time"])
-        @position = new_state["position"]
+    def state=(state)
+        @time = Time.at(state["time"])
+        @position = state["position"]
     end
 
     # See Node#load_tracks
