@@ -1,7 +1,7 @@
 require "./spec_helper"
 
 describe Flow do
-  # TODO: Write tests
+  Flow::VERSION.should be_nil(false)
 
   it "works" do
     false.should eq(true)

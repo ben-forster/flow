@@ -60,6 +60,9 @@ module Flow
         end
     end
 
+    def playlist(playlist)
+    end
+
     def register_node_handlers()
     end
 end
