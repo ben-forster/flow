@@ -1,6 +1,6 @@
 require "base64"
 
-module Caldera
+module Flow
   module Model
     class Track
       # @param [String] Base64 representation of the track
