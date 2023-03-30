@@ -4,6 +4,14 @@ version: 0.1.0
 authors:
   - Ben Forster <109809772+ben-forster@users.noreply.github.com>
 
+dependencies:
+  event_handler:
+    github: crystallabs/event_handler
+    version: ~> 1.0
+  json:
+    github: crystal-lang/crystal-json
+    version: ~> 1.0.0
+
 targets:
   flow:
     main: src/flow.cr
