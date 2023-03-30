@@ -20,13 +20,8 @@ require "flow"
 
     case command
     when PREFIX + "play"
-      embed = Discord::Embed.new(description: "**Pinging...**", title: "", colour: 0xCCCCFF_i32, type: "rich")
+      embed = Discord::Embed.new(description: "**Now Playing: **", title: "", colour: 0xCCCCFF_i32, type: "rich")
       m = client.create_message(payload.channel_id, "", embed)
-      time = Time.utc - payload.timestamp
-      time_in_ms = (time.to_f * 1000).to_i
-      embed.title = "🏓Pong!"
-      embed.description = "**It took #{time_in_ms}ms to come back.**"
-      client.edit_message(m.channel_id, m.id, "", embed)
     end
 
 client.run
